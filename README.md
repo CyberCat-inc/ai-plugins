@@ -9,7 +9,7 @@ duplication de contenu.
 
 | Composant | Déclencheur |
 |---|---|
-| `skills/code-review/` | `/code-review` ou « review my changes » |
+| `skills/cc-code-review/` | `/cc-code-review` (alias `/review`) ou « review my changes » |
 
 ## Arborescence
 
@@ -24,7 +24,7 @@ ai-plugins/                          # repo = marketplace
 │       ├── .claude-plugin/plugin.json
 │       ├── .cursor-plugin/plugin.json
 │       └── skills/
-│           └── code-review/SKILL.md
+│           └── cc-code-review/SKILL.md
 └── README.md
 ```
 
@@ -39,7 +39,7 @@ ai-plugins/                          # repo = marketplace
 
 1. Cloner le repo.
 2. Suivre l'[installation manuelle](#installation-manuelle) ci-dessous.
-3. Redémarrer Cursor (`Developer: Reload Window`) et tester `/code-review` dans un repo avec des changements non committés.
+3. Redémarrer Cursor (`Developer: Reload Window`) et tester `/cc-code-review` dans un repo avec des changements non committés.
 4. Si tu utilises Claude Code : ouvrir une session `claude` et ajouter la marketplace + installer le plugin (voir plus bas).
 
 ## Installation
@@ -50,7 +50,7 @@ Clone le repo, puis suis les étapes manuelles pour Cursor et/ou Claude Code.
 git clone <repo-url>
 ```
 
-Ensuite **redémarre Cursor** (Cmd+Shift+P → `Developer: Reload Window`) et/ou **Claude Code**, puis teste avec `/code-review` dans un repo qui a des modifs non-committées.
+Ensuite **redémarre Cursor** (Cmd+Shift+P → `Developer: Reload Window`) et/ou **Claude Code**, puis teste avec `/cc-code-review` dans un repo qui a des modifs non-committées.
 
 ### Installation manuelle
 
