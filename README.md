@@ -1,9 +1,11 @@
-# cybercat — plugin partagé CyberCat
+# ai-plugins — plugins partagés CyberCat
 
 Marketplace et plugin compatibles **Cursor** et **Claude Code** à partir d'une
 **seule source**. Les composants (skills, hooks, MCP…) vivent une seule fois
 dans `plugins/cybercat/` ; chaque outil lit son propre manifest sans
 duplication de contenu.
+
+**Repo :** [`gitlab.com/cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins) (privé, accès équipe CyberCat)
 
 ## Contenu actuel
 
@@ -14,7 +16,7 @@ duplication de contenu.
 ## Arborescence
 
 ```text
-cybercat-plugin/                     # repo = marketplace
+ai-plugins/                          # repo = marketplace
 ├── .claude-plugin/
 │   └── marketplace.json             # catalogue Claude Code
 ├── plugins/
@@ -27,27 +29,34 @@ cybercat-plugin/                     # repo = marketplace
 └── README.md
 ```
 
-## Installation (universelle, zéro config)
+## Prérequis
 
-Clone où tu veux, lance le script, c'est tout. Aucun chemin à adapter.
+- Accès au GitLab.com CyberCat (clé SSH ou token HTTPS configuré) — normalement déjà en place pour tout dev de l'équipe.
+- **macOS** ou **Linux** (Bash). Pour Windows, utiliser WSL2 ou Git Bash.
+- Optionnel mais recommandé : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour l'intégration automatique dans Claude Code.
+
+## Installation — 2 commandes
 
 ```bash
-git clone <repo-url> cybercat-plugin
-cd cybercat-plugin
-./install-local.sh
+git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git
+cd ai-plugins && ./install-local.sh
+```
+
+Ou en HTTPS si tu préfères :
+
+```bash
+git clone https://gitlab.com/cybercatinc/cybercat/ai-plugins.git
+cd ai-plugins && ./install-local.sh
 ```
 
 Le script :
 
 - **Cursor** : symlinke `plugins/cybercat/` vers `~/.cursor/plugins/local/cybercat`.
-- **Claude Code** : si la CLI `claude` est disponible, ajoute automatiquement la
-  marketplace locale et installe le plugin. Sinon, il t'affiche les deux
-  commandes à taper dans la CLI Claude.
+- **Claude Code** : si la CLI `claude` est présente, ajoute la marketplace locale et installe le plugin automatiquement. Sinon, il t'affiche les deux commandes à taper toi-même dans la session Claude.
 
-Ensuite **redémarre Cursor** (`Developer: Reload Window`) et/ou **Claude Code**,
-puis teste avec `/code-review` dans un repo qui a des modifs non-committées.
+Ensuite **redémarre Cursor** (Cmd+Shift+P → `Developer: Reload Window`) et/ou **Claude Code**, puis teste avec `/code-review` dans un repo qui a des modifs non-committées.
 
-### Options
+### Options du script
 
 ```bash
 ./install-local.sh --cursor      # seulement Cursor
@@ -56,46 +65,32 @@ puis teste avec `/code-review` dans un repo qui a des modifs non-committées.
 ./install-local.sh --help
 ```
 
-### Installation manuelle (si besoin)
+### Installation manuelle (si le script échoue)
 
 **Cursor** — depuis la racine du clone :
 
 ```bash
+mkdir -p ~/.cursor/plugins/local
 ln -s "$(pwd)/plugins/cybercat" ~/.cursor/plugins/local/cybercat
 ```
 
-**Claude Code** — dans la CLI `claude` :
+**Claude Code** — dans une session `claude` :
 
 ```text
-/plugin marketplace add <chemin-absolu-du-clone>
+/plugin marketplace add /chemin/absolu/vers/ai-plugins
 /plugin install cybercat@cybercat
 ```
 
-## Distribuer à l'équipe
+## Mises à jour
 
-1. Push ce repo sur GitLab CyberCat (ou GitHub).
-2. Tes collègues font :
+Quand un collègue pousse un changement (nouveau skill, version bumpée, etc.) :
 
-   ```bash
-   git clone <repo-url> && cd cybercat-plugin && ./install-local.sh
-   ```
-
-3. **Mises à jour** : après un `git pull`, Cursor recharge automatiquement
-   (symlink). Pour Claude Code, `claude plugin marketplace update cybercat`
-   suffit — ou re-lance `./install-local.sh` qui fait la même chose.
-
-### Distribution sans cloner (optionnel, plus tard)
-
-Une fois le repo hébergé, on pourra aussi installer directement depuis GitLab :
-
-```text
-# dans Claude Code
-/plugin marketplace add https://gitlab.cybercat.priv/<group>/cybercat-plugin.git
-/plugin install cybercat@cybercat
+```bash
+cd ai-plugins && git pull
 ```
 
-Et côté Cursor, soumettre le repo à la marketplace officielle ou à une
-**team marketplace** (Teams/Enterprise) pour de la distribution en un clic.
+- **Cursor** : c'est un symlink, les fichiers mis à jour sont lus à la prochaine commande. Au besoin `Developer: Reload Window`.
+- **Claude Code** : `claude plugin marketplace update cybercat` — ou ré-exécuter `./install-local.sh` qui fait la même chose.
 
 ## Ajouter un composant
 
@@ -117,3 +112,7 @@ Après un changement, bumpe `version` dans **les trois** manifests :
 - `plugins/cybercat/.cursor-plugin/plugin.json`
 
 Sans bump, Claude Code garde l'ancienne version en cache côté clients.
+
+## Pourquoi ce setup et pas la Team Marketplace Cursor ?
+
+La Team Marketplace Cursor (dashboard admin → Import) ne supporte pas encore les URLs GitLab privées (testé — échec à l'import). On reste donc sur le flow manuel `git clone + ./install-local.sh`, qui fonctionne identiquement sur Cursor et Claude Code. Le jour où Cursor ajoute le support GitLab ou qu'on miroir le repo sur GitHub, on basculera.
