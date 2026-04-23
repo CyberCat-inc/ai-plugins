@@ -29,7 +29,6 @@ ai-plugins/                          # repo = marketplace
 │       ├── .cursor-plugin/plugin.json
 │       └── skills/
 │           └── code-review/SKILL.md
-├── install-local.sh                 # installer universel (Cursor + Claude Code)
 └── README.md
 ```
 
@@ -38,57 +37,42 @@ ai-plugins/                          # repo = marketplace
 - **Depuis GitHub (recommandé)** : aucun compte requis pour **cloner** un dépôt **public** ; une clé SSH ou HTTPS suffit.
 - **Depuis GitLab (miroir privé)** : être membre du groupe avec au moins le rôle **Developer** sur [`cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins).
 - **Auth Git** : clé SSH ou HTTPS (PAT `read_repository` suffit pour un clone privé ; `api` si tu utilises `glab`).
-- **macOS** ou **Linux** (Bash 4+). Sous **Windows**, utiliser **WSL2** ou **Git Bash** (le script utilise des symlinks).
+- **macOS** ou **Linux** (Bash 4+). Sous **Windows**, utiliser **WSL2** ou **Git Bash** (l'installation utilise des symlinks).
 - **Cursor** installé (pour la partie IDE).
-- Optionnel mais recommandé : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour que `./install-local.sh` enregistre automatiquement la marketplace Claude Code.
+- Optionnel : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour installer le plugin côté Claude Code.
 
 ### Checklist rapide (nouveau dev)
 
 1. Cloner depuis **GitHub** (public) ou **GitLab** (privé, si tu as accès).
-2. `cd ai-plugins && ./install-local.sh`
+2. Suivre l'[installation manuelle](#installation) ci-dessous.
 3. Redémarrer Cursor (`Developer: Reload Window`) et tester `/code-review` dans un repo avec des changements non committés.
-4. Si tu utilises Claude Code : ouvrir une session `claude` et vérifier que `/code-review` répond (ou suivre les deux lignes affichées par le script si la CLI `claude` était absente au moment de l’install).
+4. Si tu utilises Claude Code : ouvrir une session `claude` et ajouter la marketplace + installer le plugin (voir plus bas).
 
-## Installation — 2 commandes
+## Installation
+
+Clone le repo, puis suis les étapes manuelles pour Cursor et/ou Claude Code.
 
 **GitHub (défaut)** :
 
 ```bash
 git clone git@github.com:CyberCat-inc/ai-plugins.git
-cd ai-plugins && ./install-local.sh
 ```
 
 HTTPS :
 
 ```bash
 git clone https://github.com/CyberCat-inc/ai-plugins.git
-cd ai-plugins && ./install-local.sh
 ```
 
 **GitLab (miroir interne)** :
 
 ```bash
 git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git
-cd ai-plugins && ./install-local.sh
 ```
-
-Le script :
-
-- **Cursor** : symlinke `plugins/cybercat/` vers `~/.cursor/plugins/local/cybercat`.
-- **Claude Code** : si la CLI `claude` est présente, ajoute la marketplace locale et installe le plugin automatiquement. Sinon, il t'affiche les deux commandes à taper toi-même dans la session Claude.
 
 Ensuite **redémarre Cursor** (Cmd+Shift+P → `Developer: Reload Window`) et/ou **Claude Code**, puis teste avec `/code-review` dans un repo qui a des modifs non-committées.
 
-### Options du script
-
-```bash
-./install-local.sh --cursor      # seulement Cursor
-./install-local.sh --claude      # seulement Claude Code
-./install-local.sh --uninstall   # tout désinstaller proprement
-./install-local.sh --help
-```
-
-### Installation manuelle (si le script échoue)
+### Installation manuelle
 
 **Cursor** — depuis la racine du clone :
 
@@ -113,7 +97,7 @@ cd ai-plugins && git pull
 ```
 
 - **Cursor** : c'est un symlink, les fichiers mis à jour sont lus à la prochaine commande. Au besoin `Developer: Reload Window`.
-- **Claude Code** : `claude plugin marketplace update cybercat` — ou ré-exécuter `./install-local.sh` qui fait la même chose.
+- **Claude Code** : `claude plugin marketplace update cybercat`.
 
 ## Ajouter un composant
 
@@ -147,7 +131,7 @@ Le dépôt GitHub public contient [`.cursor-plugin/marketplace.json`](https://gi
 
 Ensuite assigner le plugin **cybercat** aux groupes (requis ou optionnel) et enregistrer.
 
-**Pour tout le monde (sans marketplace)** : le flow manuel `git clone` + `./install-local.sh` reste valide et identique que le clone vienne de GitHub ou de GitLab.
+**Pour tout le monde (sans marketplace)** : le flow manuel `git clone` + installation manuelle reste valide et identique que le clone vienne de GitHub ou de GitLab.
 
 ## GitLab privé
 
