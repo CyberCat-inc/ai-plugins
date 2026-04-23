@@ -31,9 +31,19 @@ ai-plugins/                          # repo = marketplace
 
 ## Prérequis
 
-- Accès au GitLab.com CyberCat (clé SSH ou token HTTPS configuré) — normalement déjà en place pour tout dev de l'équipe.
-- **macOS** ou **Linux** (Bash). Pour Windows, utiliser WSL2 ou Git Bash.
-- Optionnel mais recommandé : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour l'intégration automatique dans Claude Code.
+- **Accès GitLab** : être membre du groupe avec au moins le rôle **Developer** (ou plus) sur le projet [`cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins) pour pouvoir `git clone` (repo **privé**).
+- **Auth Git** : soit une **clé SSH** enregistrée sur ton compte GitLab.com, soit **HTTPS** avec identifiants valides (PAT `read_repository` suffit pour le clone ; `api` si tu utilises aussi `glab`).
+- **macOS** ou **Linux** (Bash 4+). Sous **Windows**, utiliser **WSL2** ou **Git Bash** (le script utilise des symlinks).
+- **Cursor** installé (pour la partie IDE).
+- Optionnel mais recommandé : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour que `./install-local.sh` enregistre automatiquement la marketplace Claude Code.
+
+### Checklist rapide (nouveau dev)
+
+1. Vérifier l’accès au projet sur GitLab (page du repo doit s’ouvrir sans 404).
+2. `git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git` (ou HTTPS).
+3. `cd ai-plugins && ./install-local.sh`
+4. Redémarrer Cursor (`Developer: Reload Window`) et tester `/code-review` dans un repo avec des changements non committés.
+5. Si tu utilises Claude Code : ouvrir une session `claude` et vérifier que `/code-review` répond (ou suivre les deux lignes affichées par le script si la CLI `claude` était absente au moment de l’install).
 
 ## Installation — 2 commandes
 
