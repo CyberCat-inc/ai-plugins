@@ -1,0 +1,17 @@
+{
+  "name": "cybercat",
+  "owner": {
+    "name": "CyberCat inc"
+  },
+  "metadata": {
+    "description": "Plugins et skills partagés CyberCat (Cursor + Claude Code).",
+    "version": "0.1.1"
+  },
+  "plugins": [
+    {
+      "name": "cybercat",
+      "source": "plugins/cybercat",
+      "description": "Skill /code-review et autres outils partagés."
+    }
+  ]
+}

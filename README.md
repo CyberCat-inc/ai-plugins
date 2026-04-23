@@ -5,7 +5,9 @@ Marketplace et plugin compatibles **Cursor** et **Claude Code** à partir d'une
 dans `plugins/cybercat/` ; chaque outil lit son propre manifest sans
 duplication de contenu.
 
-**Repo :** [`gitlab.com/cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins) (privé, accès équipe CyberCat)
+**Source canonique (public, GitHub Free) :** [`github.com/CyberCat-inc/ai-plugins`](https://github.com/CyberCat-inc/ai-plugins) — pour le clone, Cursor Team Marketplace et la soumission marketplace Cursor.
+
+**Miroir interne (privé) :** [`gitlab.com/cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins) — même contenu ; utile si GitHub est indisponible ou pour les workflows GitLab-only.
 
 ## Contenu actuel
 
@@ -19,6 +21,8 @@ duplication de contenu.
 ai-plugins/                          # repo = marketplace
 ├── .claude-plugin/
 │   └── marketplace.json             # catalogue Claude Code
+├── .cursor-plugin/
+│   └── marketplace.json             # catalogue Cursor (multi-plugins)
 ├── plugins/
 │   └── cybercat/                    # le plugin lui-même
 │       ├── .claude-plugin/plugin.json
@@ -31,31 +35,40 @@ ai-plugins/                          # repo = marketplace
 
 ## Prérequis
 
-- **Accès GitLab** : être membre du groupe avec au moins le rôle **Developer** (ou plus) sur le projet [`cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins) pour pouvoir `git clone` (repo **privé**).
-- **Auth Git** : soit une **clé SSH** enregistrée sur ton compte GitLab.com, soit **HTTPS** avec identifiants valides (PAT `read_repository` suffit pour le clone ; `api` si tu utilises aussi `glab`).
+- **Depuis GitHub (recommandé)** : aucun compte requis pour **cloner** un dépôt **public** ; une clé SSH ou HTTPS suffit.
+- **Depuis GitLab (miroir privé)** : être membre du groupe avec au moins le rôle **Developer** sur [`cybercatinc/cybercat/ai-plugins`](https://gitlab.com/cybercatinc/cybercat/ai-plugins).
+- **Auth Git** : clé SSH ou HTTPS (PAT `read_repository` suffit pour un clone privé ; `api` si tu utilises `glab`).
 - **macOS** ou **Linux** (Bash 4+). Sous **Windows**, utiliser **WSL2** ou **Git Bash** (le script utilise des symlinks).
 - **Cursor** installé (pour la partie IDE).
 - Optionnel mais recommandé : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour que `./install-local.sh` enregistre automatiquement la marketplace Claude Code.
 
 ### Checklist rapide (nouveau dev)
 
-1. Vérifier l’accès au projet sur GitLab (page du repo doit s’ouvrir sans 404).
-2. `git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git` (ou HTTPS).
-3. `cd ai-plugins && ./install-local.sh`
-4. Redémarrer Cursor (`Developer: Reload Window`) et tester `/code-review` dans un repo avec des changements non committés.
-5. Si tu utilises Claude Code : ouvrir une session `claude` et vérifier que `/code-review` répond (ou suivre les deux lignes affichées par le script si la CLI `claude` était absente au moment de l’install).
+1. Cloner depuis **GitHub** (public) ou **GitLab** (privé, si tu as accès).
+2. `cd ai-plugins && ./install-local.sh`
+3. Redémarrer Cursor (`Developer: Reload Window`) et tester `/code-review` dans un repo avec des changements non committés.
+4. Si tu utilises Claude Code : ouvrir une session `claude` et vérifier que `/code-review` répond (ou suivre les deux lignes affichées par le script si la CLI `claude` était absente au moment de l’install).
 
 ## Installation — 2 commandes
 
+**GitHub (défaut)** :
+
 ```bash
-git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git
+git clone git@github.com:CyberCat-inc/ai-plugins.git
 cd ai-plugins && ./install-local.sh
 ```
 
-Ou en HTTPS si tu préfères :
+HTTPS :
 
 ```bash
-git clone https://gitlab.com/cybercatinc/cybercat/ai-plugins.git
+git clone https://github.com/CyberCat-inc/ai-plugins.git
+cd ai-plugins && ./install-local.sh
+```
+
+**GitLab (miroir interne)** :
+
+```bash
+git clone git@gitlab.com:cybercatinc/cybercat/ai-plugins.git
 cd ai-plugins && ./install-local.sh
 ```
 
@@ -115,14 +128,27 @@ Tout se passe **à l'intérieur de `plugins/cybercat/`**, à côté de `skills/`
 | Une rule | `rules/<nom>.mdc` | ✓ | — |
 | Un subagent | `agents/<nom>.md` | ✓ | ✓ |
 
-Après un changement, bumpe `version` dans **les trois** manifests :
+Après un changement, bumpe `version` dans **les quatre** fichiers de version :
 
-- `.claude-plugin/marketplace.json`
+- `.claude-plugin/marketplace.json` (`metadata.version`)
+- `.cursor-plugin/marketplace.json` (`metadata.version`)
 - `plugins/cybercat/.claude-plugin/plugin.json`
 - `plugins/cybercat/.cursor-plugin/plugin.json`
 
-Sans bump, Claude Code garde l'ancienne version en cache côté clients.
+Sans bump côté Claude Code, les clients gardent l’ancienne version en cache.
 
-## Pourquoi ce setup et pas la Team Marketplace Cursor ?
+## Cursor Team Marketplace (org)
 
-La Team Marketplace Cursor (dashboard admin → Import) ne supporte pas encore les URLs GitLab privées (testé — échec à l'import). On reste donc sur le flow manuel `git clone + ./install-local.sh`, qui fonctionne identiquement sur Cursor et Claude Code. Le jour où Cursor ajoute le support GitLab ou qu'on miroir le repo sur GitHub, on basculera.
+Le dépôt GitHub public contient [`.cursor-plugin/marketplace.json`](https://github.com/CyberCat-inc/ai-plugins/blob/main/.cursor-plugin/marketplace.json) à la racine, comme le [référentiel Cursor](https://cursor.com/docs/reference/plugins.md#multi-plugin-repositories) l’exige pour un repo **multi-plugins**.
+
+**Pour un admin Cursor (plan Teams / Enterprise)** : Dashboard → Settings → Plugins → **Team Marketplaces** → **Import** → coller :
+
+`https://github.com/CyberCat-inc/ai-plugins`
+
+Ensuite assigner le plugin **cybercat** aux groupes (requis ou optionnel) et enregistrer.
+
+**Pour tout le monde (sans marketplace)** : le flow manuel `git clone` + `./install-local.sh` reste valide et identique que le clone vienne de GitHub ou de GitLab.
+
+## GitLab privé
+
+L’import Team Marketplace Cursor vers **GitLab** (URL privée) a été testé sans succès. Le miroir GitLab reste disponible pour clone interne et pour les workflows qui restent sur GitLab ; la découverte Cursor passe par **GitHub**.
