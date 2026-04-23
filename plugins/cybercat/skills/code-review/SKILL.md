@@ -15,13 +15,12 @@ When the user requests a review (e.g., via `/review` or by asking to "review my 
     - Run `git diff -w HEAD` to retrieve changes to tracked files (ignoring whitespace).
     - Run `git ls-files --others --exclude-standard` to find untracked (new) files.
     - Read the content of any untracked files discovered.
-    - If no changes are found in either command, inform the user.
+    - If no uncommitted or staged changes are found (both commands return empty), ask the user which branches they want to compare (e.g., `feature-branch` vs `main`). Then run `git diff -w <base>...<target>` to retrieve the changes between those branches and proceed with the review.
 2.  **Analyze Code**: Systematically review the changes for the following:
-    *   **TypeScript Typing**: Check for adequate, explicit, and accurate types. Avoid `any` where possible.
     *   **SOLID Principles**: Ensure Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion are respected.
     *   **DRY Principle**: Identify any unnecessary logic duplication.
     *   **Clean Code Standards**: Evaluate naming conventions, function size, readability, and overall structure.
-    *   **NodeJS/Express Best Practices**: Check for proper error handling (async/await), security (middleware), performance, and project structure conventions.
+    *   **Project / Language / Framework Standards**: Ensure the code follows the conventions and best practices specific to the project, the programming language, and the framework in use (e.g., idiomatic patterns, style guides, official framework recommendations).
 3.  **Report Issues**: Number each issue sequentially (starting from `#1`) across the entire report so the user can reference them in chat (e.g. "fix #3"). For each identified issue, provide:
     *   **Problem**: A clear explanation of what is wrong and why.
     *   **Location**: The file path and approximate line numbers.
