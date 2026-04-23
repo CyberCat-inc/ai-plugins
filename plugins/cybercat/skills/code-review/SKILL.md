@@ -7,9 +7,6 @@ description: Reviews uncommitted code changes for TypeScript typing, SOLID, DRY,
 
 This skill allows the agent to perform a comprehensive code review of uncommitted changes (staged and unstaged).
 
-> Original skill authored by **Alex Firlot** — [`richelieu/crm-api@feature/RICRM-206`](https://gitlab.cybercat.priv/richelieu/crm-api/-/blob/feature/RICRM-206/.cursor/skills/code-review/SKILL.md).
-> Packaged here unchanged for distribution via the shared `cybercat-plugin`.
-
 ## Instructions
 
 When the user requests a review (e.g., via `/review` or by asking to "review my changes"), follow these steps:
