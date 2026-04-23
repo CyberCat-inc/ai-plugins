@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Reviews uncommitted code changes for TypeScript typing, SOLID, DRY, and Clean Code standards. Use when the user types /review or asks to review uncommitted code.
+description: Reviews uncommitted code changes (or a branch comparison) against SOLID, DRY, Clean Code, and the project / language / framework standards in use. Use when the user types /review or asks to review their code.
 ---
 
 # Code Review Skill
