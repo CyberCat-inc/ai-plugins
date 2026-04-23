@@ -1,0 +1,18 @@
+{
+  "name": "cybercat",
+  "owner": {
+    "name": "CyberCat",
+    "url": "https://gitlab.cybercat.priv"
+  },
+  "metadata": {
+    "description": "Marketplace interne CyberCat — skills et outils partagés pour Cursor et Claude Code.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "cybercat",
+      "source": "./plugins/cybercat",
+      "description": "Plugin de base CyberCat : skill /code-review et autres outils partagés."
+    }
+  ]
+}
