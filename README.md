@@ -53,15 +53,13 @@ Le plugin est installé. Teste dans un repo avec des modifs non committées avec
 
 ### Cursor
 
+Le plugin est déjà disponible pour tous les utilisateurs Cursor de CyberCat.
+
 1. Ouvre **Settings → Plugins**.
-2. Va dans l'onglet **Marketplaces**.
-3. Clique **Add marketplace** et colle `https://github.com/CyberCat-inc/ai-plugins`.
-4. Retourne dans l'onglet **Discover**, sélectionne **cybercat** puis clique **Install**.
-5. Recharge la fenêtre via la command palette (`Developer: Reload Window`).
+2. Dans l'onglet **Discover**, sélectionne **cybercat** puis clique **Install**.
+3. Recharge la fenêtre via la command palette (`Developer: Reload Window`).
 
 Teste avec `/cc-code-review` dans un repo avec des modifs non committées.
-
-> Pour les orgs Cursor (Teams / Enterprise) : un admin peut aussi importer le repo dans le **Team Marketplace** (voir plus bas), auquel cas l'étape 3 est déjà faite et il suffit d'activer **cybercat**.
 
 ## Mises à jour
 
@@ -69,31 +67,3 @@ Les nouvelles versions sont distribuées automatiquement par le marketplace.
 
 - **Claude Code** : dans `/plugins → Marketplaces`, sélectionne **cybercat** et appuie sur `u` pour update.
 - **Cursor** : recharge la fenêtre (`Developer: Reload Window`) ; le marketplace resynchronise.
-
-## Ajouter un composant
-
-Tout se passe **à l'intérieur de `plugins/cybercat/`**, à côté de `skills/` :
-
-| Je veux ajouter… | Je crée… | Cursor | Claude Code |
-|---|---|:-:|:-:|
-| Un skill | `skills/<nom>/SKILL.md` | ✓ | ✓ |
-| Une slash-command | `commands/<nom>.md` | ✓ | ✓ |
-| Un hook | `hooks/hooks.json` + scripts | ✓ | ✓ |
-| Un serveur MCP | `.mcp.json` (racine plugin) | ✓ | ✓ |
-| Une rule | `rules/<nom>.mdc` | ✓ | — |
-| Un subagent | `agents/<nom>.md` | ✓ | ✓ |
-
-Après un changement, bumpe `version` dans **les quatre** fichiers de version :
-
-- `.claude-plugin/marketplace.json` (`metadata.version`)
-- `.cursor-plugin/marketplace.json` (`metadata.version`)
-- `plugins/cybercat/.claude-plugin/plugin.json`
-- `plugins/cybercat/.cursor-plugin/plugin.json`
-
-Sans bump côté Claude Code, les clients gardent l'ancienne version en cache.
-
-## Cursor Team Marketplace (org)
-
-Le dépôt contient `.cursor-plugin/marketplace.json` à la racine, comme le [référentiel Cursor](https://cursor.com/docs/reference/plugins.md#multi-plugin-repositories) l'exige pour un repo **multi-plugins**.
-
-**Pour un admin Cursor (plan Teams / Enterprise)** : Dashboard → Settings → Plugins → **Team Marketplaces** → **Import** → coller l'URL du repo, puis assigner le plugin **cybercat** aux groupes (requis ou optionnel) et enregistrer.
