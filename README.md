@@ -30,54 +30,45 @@ ai-plugins/                          # repo = marketplace
 
 ## Prérequis
 
-- **Auth Git** : clé SSH ou HTTPS.
-- **macOS** ou **Linux** (Bash 4+). Sous **Windows**, utiliser **WSL2** ou **Git Bash** (l'installation utilise des symlinks).
-- **Cursor** installé (pour la partie IDE).
-- Optionnel : la CLI [`claude`](https://docs.claude.com/en/docs/claude-code/installation) pour installer le plugin côté Claude Code.
-
-### Checklist rapide (nouveau dev)
-
-1. Cloner le repo.
-2. Suivre l'[installation manuelle](#installation-manuelle) ci-dessous.
-3. Redémarrer Cursor (`Developer: Reload Window`) et tester `/cc-code-review` dans un repo avec des changements non committés.
-4. Si tu utilises Claude Code : ouvrir une session `claude` et ajouter la marketplace + installer le plugin (voir plus bas).
+- **Cursor** (pour l'IDE) et/ou **Claude Code** CLI (voir [installation de `claude`](https://docs.claude.com/en/docs/claude-code/installation)).
 
 ## Installation
 
-Clone le repo, puis suis les étapes manuelles pour Cursor et/ou Claude Code.
+L'installation se fait entièrement via le Marketplace intégré de chaque outil. URL du repo à coller :
 
-```bash
-git clone <repo-url>
+```
+https://github.com/CyberCat-inc/ai-plugins
 ```
 
-Ensuite **redémarre Cursor** (Cmd+Shift+P → `Developer: Reload Window`) et/ou **Claude Code**, puis teste avec `/cc-code-review` dans un repo qui a des modifs non-committées.
+### Claude Code
 
-### Installation manuelle
+1. Lance `claude` dans ton terminal.
+2. Tape `/plugins`.
+3. Va dans l'onglet **Marketplaces**.
+4. Choisis **+ Add Marketplace** et colle `https://github.com/CyberCat-inc/ai-plugins`.
+5. Va dans l'onglet **Discover**, sélectionne **cybercat**.
+6. Sur l'écran de détails, choisis **Install for you (user scope)**.
 
-**Cursor** — depuis la racine du clone :
+Le plugin est installé. Teste dans un repo avec des modifs non committées avec `/cc-code-review` (alias `/review`).
 
-```bash
-mkdir -p ~/.cursor/plugins/local
-ln -s "$(pwd)/plugins/cybercat" ~/.cursor/plugins/local/cybercat
-```
+### Cursor
 
-**Claude Code** — dans une session `claude` :
+1. Ouvre **Settings → Plugins**.
+2. Va dans l'onglet **Marketplaces**.
+3. Clique **Add marketplace** et colle `https://github.com/CyberCat-inc/ai-plugins`.
+4. Retourne dans l'onglet **Discover**, sélectionne **cybercat** puis clique **Install**.
+5. Recharge la fenêtre via la command palette (`Developer: Reload Window`).
 
-```text
-/plugin marketplace add /chemin/absolu/vers/ai-plugins
-/plugin install cybercat@cybercat
-```
+Teste avec `/cc-code-review` dans un repo avec des modifs non committées.
+
+> Pour les orgs Cursor (Teams / Enterprise) : un admin peut aussi importer le repo dans le **Team Marketplace** (voir plus bas), auquel cas l'étape 3 est déjà faite et il suffit d'activer **cybercat**.
 
 ## Mises à jour
 
-Quand un changement est poussé (nouveau skill, version bumpée, etc.) :
+Les nouvelles versions sont distribuées automatiquement par le marketplace.
 
-```bash
-cd ai-plugins && git pull
-```
-
-- **Cursor** : c'est un symlink, les fichiers mis à jour sont lus à la prochaine commande. Au besoin `Developer: Reload Window`.
-- **Claude Code** : `claude plugin marketplace update cybercat`.
+- **Claude Code** : dans `/plugins → Marketplaces`, sélectionne **cybercat** et appuie sur `u` pour update.
+- **Cursor** : recharge la fenêtre (`Developer: Reload Window`) ; le marketplace resynchronise.
 
 ## Ajouter un composant
 
@@ -106,5 +97,3 @@ Sans bump côté Claude Code, les clients gardent l'ancienne version en cache.
 Le dépôt contient `.cursor-plugin/marketplace.json` à la racine, comme le [référentiel Cursor](https://cursor.com/docs/reference/plugins.md#multi-plugin-repositories) l'exige pour un repo **multi-plugins**.
 
 **Pour un admin Cursor (plan Teams / Enterprise)** : Dashboard → Settings → Plugins → **Team Marketplaces** → **Import** → coller l'URL du repo, puis assigner le plugin **cybercat** aux groupes (requis ou optionnel) et enregistrer.
-
-**Pour tout le monde (sans marketplace)** : le flow manuel `git clone` + installation manuelle reste valide.
