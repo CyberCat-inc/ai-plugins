@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Plugins et skills partagés CyberCat (Cursor + Claude Code).",
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "plugins": [
     {
       "name": "cybercat",
       "source": "plugins/cybercat",
-      "description": "Skill /cc-code-review et autres outils partagés."
+      "description": "Skills /cc-code-review, /cc-evaluation et autres outils partagés."
     }
   ]
 }
