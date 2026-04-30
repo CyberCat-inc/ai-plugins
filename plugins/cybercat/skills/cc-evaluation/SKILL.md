@@ -1,18 +1,20 @@
 ---
 name: cc-evaluation
-description: Évalue un billet de développement CyberCat avant les notes de dev ou la planification. Utiliser quand l'utilisateur demande d'analyser un billet, découper le scope, estimer la complexité, identifier les dépendances, bloquants, risques ou préparer la matière pour cc-notes-de-dev.
+description: Évalue l'effort et le temps requis pour un billet Jira de développement avant les notes de dev ou la planification. Utiliser quand l'utilisateur demande d'analyser un billet, découper le scope, estimer le temps et la complexité, identifier les dépendances, bloquants, risques ou préparer la matière pour cc-notes-de-dev.
 ---
 
 # Skill cc-evaluation
 
-Ce skill sert à produire une évaluation technique courte et fondée d'un billet avant les notes de dev. Prépare la matière utile pour `cc-notes-de-dev`, sans rédiger la note finale ni produire un plan d'implémentation détaillé.
+Ce skill sert d'abord à produire une estimation courte et fondée de l'effort et du temps requis pour un billet avant les notes de dev. Il explique les sous-éléments, hypothèses, incertitudes et risques qui influencent cette estimation, puis prépare la matière utile pour `cc-notes-de-dev`, sans rédiger la note finale ni produire un plan d'implémentation détaillé.
 
 ## Instructions
 
 Quand l'utilisateur demande d'évaluer un billet (par ex. via `/cc-evaluation` ou en demandant « évalue ce billet »), suis ces étapes :
 
 1.  **Lire le contexte disponible** :
-    - Utilise le résumé, la description, les critères d'acceptation, l'épic complet, les billets liés, le repo et les conventions disponibles.
+    - Lis le billet Jira comme source principale quand un identifiant est fourni et que Jira est accessible.
+    - Si Jira n'est pas accessible, travaille à partir du contenu fourni et indique cette limite.
+    - Utilise aussi le résumé, la description, les critères d'acceptation, l'épic complet, les billets liés, le repo et les conventions disponibles.
     - Quand l'épic ou les billets liés sont accessibles, repère les dépendances, bloquants ou conflits potentiels entre billets.
     - Si une source utile n'est pas accessible, indique la limite explicitement.
     - Sépare ce qui est écrit dans le billet de ce qui est une hypothèse.
@@ -24,10 +26,12 @@ Quand l'utilisateur demande d'évaluer un billet (par ex. via `/cc-evaluation` o
     - Liste les sous-éléments orientés résultat, pas seulement les fichiers à modifier.
     - Note les dépendances entre sous-éléments quand elles existent.
     - Garde le découpage assez court pour servir d'intrant bref à `cc-notes-de-dev`.
-4.  **Qualifier la complexité** :
-    - Donne une complexité `faible`, `moyenne` ou `élevée` pour chaque sous-élément.
+4.  **Estimer l'effort et qualifier la complexité** :
+    - Donne une estimation de temps totale et par sous-élément quand c'est raisonnablement possible.
+    - Nomme les hypothèses utilisées pour estimer l'effort.
+    - Si le contexte ne permet pas d'estimer le temps avec confiance, indique pourquoi et quelles informations manquent.
+    - Donne une complexité `faible`, `moyenne` ou `élevée` pour chaque sous-élément comme appui à l'estimation.
     - Justifie chaque cote en une phrase.
-    - Donne une estimation de temps par sous-élément seulement si le contexte est suffisant.
 5.  **Identifier les risques** :
     - Liste les dépendances, bloquants confirmés, conflits entre billets de l'épic, risques possibles, migrations, permissions, feature flags, impacts UI/API et compatibilité de données.
     - Mentionne les besoins de tests seulement lorsqu'un risque technique précis n'est pas déjà couvert par les critères d'acceptation.
@@ -51,6 +55,12 @@ Quand l'utilisateur demande d'évaluer un billet (par ex. via `/cc-evaluation` o
 ## Sous-éléments
 - **...** — complexité : faible/moyenne/élevée. Estimation : ... si possible. Raison :
 
+## Estimation
+- Total :
+- Par sous-élément :
+- Hypothèses :
+- Incertitudes / limites :
+
 ## Dépendances et bloquants
 - Confirmés :
 - Possibles :
@@ -73,5 +83,5 @@ Quand l'utilisateur demande d'évaluer un billet (par ex. via `/cc-evaluation` o
 - Ne pas inclure de snippets de code pendant l'évaluation. Signaler seulement si un exemple pourrait être utile plus tard pour un concept complexe ou inhabituel.
 - Utiliser les vrais termes du framework et du projet quand ils sont connus.
 - Si plusieurs approches sont possibles, nommer les options et recommander la meilleure avec une justification courte.
-- Privilégier les patterns déjà présents dans le projet plutôt que les bonnes pratiques génériques.
+- Combiner cohérence avec l'existant et respect des bonnes pratiques; adapter selon le contexte plutôt qu'appliquer l'un ou l'autre mécaniquement.
 - Ne pas produire d'arborescence exhaustive ou de liste autonome de fichiers impactés; nommer les impacts seulement s'ils expliquent un sous-élément, une dépendance ou un risque.
