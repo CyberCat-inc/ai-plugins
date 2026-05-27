@@ -9,15 +9,14 @@ Ce skill produit un seul plan d'implémentation, actionnable et ancré dans le c
 
 ## Règles dures
 
-- Toujours poser les questions bloquantes avant de produire le plan si un des éléments suivants est ambigu : intention business, portée, maquettes, edge cases, critères d'acceptation, mode cible, frontières de module ou de fichier.
+- Toujours poser les questions de clarification avant de produire le plan si un des éléments suivants est ambigu : intention business, portée, maquettes, edge cases, critères d'acceptation, mode cible, frontières de module ou de fichier.
 - Ne jamais produire plus d'une approche recommandée. Choisir la meilleure, la justifier, et garder les alternatives seulement comme notes courtes `Alternatives rejetées`.
 - Ne jamais écrire de code final hors du plan. Le planning est en lecture seule.
 - Ne jamais sauter l'étape Jira quand l'utilisateur mentionne une clé de billet Jira (ex. `ABC-123`). Si Jira n'est pas accessible dans le harnais courant et qu'aucune autre capacité tracker équivalente n'est disponible, arrêter et le dire clairement.
-- Toujours lister les fichiers `.cursor/rules/*.mdc` applicables quand ils existent. Ajouter aussi `CLAUDE.md`, `AGENTS.md` ou tout équivalent pertinent trouvé dans le repo.
-- Toujours confirmer explicitement dans le plan quelles règles et conventions seront appliquées, et confirmer qu'elles seront respectées.
-- Toujours interroger la base de contexte projet après avoir récupéré le contexte du billet ou de la demande quand elle est disponible (`ByteRover` ou équivalent).
-- Si la base de contexte projet n'est pas disponible, inaccessible, en erreur, ou ne renvoie rien d'utile, noter la limite puis continuer avec le reste du contexte disponible. Ne jamais bloquer le plan sur cette étape.
-- Toujours rattacher chaque critère d'acceptation à au moins une étape d'implémentation concrète.
+- Toujours lister les guidelines, règles et conventions applicables du projet, puis confirmer explicitement dans le plan qu'elles seront respectées.
+- Toujours interroger ByteRover après avoir récupéré le contexte du billet ou de la demande quand ByteRover est installé ou configuré dans le projet.
+- Si ByteRover n'est pas disponible, inaccessible, en erreur, ou ne renvoie rien d'utile, noter la limite puis continuer avec le reste du contexte disponible. Ne jamais bloquer le plan sur ByteRover.
+- Toujours fournir une preuve explicite que le plan couvre tous les critères d'acceptation.
 - Toujours définir ce qui est hors scope quand le billet ou la demande est ambigu, pour éviter le scope creep.
 - Toujours signaler l'impact cross-repo quand un changement touche plusieurs repos ou contrats.
 
@@ -27,10 +26,10 @@ Copier cette checklist dans la réponse et la cocher au fur et à mesure :
 
 - [ ] 1. Contexte Jira (ticket + Epic + billets liés) OU description fournie par l'utilisateur
 - [ ] 2. Maquettes / contexte visuel
-- [ ] 3. Requête base de contexte projet (`ByteRover` ou équivalent) à partir des mots-clés de l'étape 1
+- [ ] 3. Requête ByteRover à partir des mots-clés de l'étape 1 (si installé/configuré)
 - [ ] 4. Exploration du codebase (fichiers impactés, patterns)
-- [ ] 5. Fichiers `.cursor/rules/*.mdc` applicables identifiés
-- [ ] 6. Questions bloquantes posées si nécessaire
+- [ ] 5. Guidelines / règles / conventions applicables identifiées
+- [ ] 6. Questions de clarification posées si nécessaire
 - [ ] 7. Plan rédigé (une seule solution recommandée)
 - [ ] 8. Diagramme Mermaid inclus
 - [ ] 9. Preuves code (références existantes + snippets proposés)
@@ -51,7 +50,7 @@ Si un billet Jira est mentionné :
   1. le billet ciblé : résumé, description, critères d'acceptation, commentaires
   2. son Epic parent si présent : objectif, scope
   3. les billets liés : `blocks`, `is blocked by`, `relates to`, dépendances utiles
-- Si un de ces éléments est manquant, contradictoire ou inaccessible, pose la question bloquante avant le plan.
+- Si un de ces éléments est manquant, contradictoire ou inaccessible, pose la question de clarification avant le plan.
 - Si Jira n'est pas disponible dans l'environnement et qu'aucun fallback tracker fiable n'existe, arrête et dis-le. N'invente pas le contexte.
 
 Si aucune clé Jira n'est fournie :
@@ -69,13 +68,13 @@ Si aucun contexte visuel n'est fourni alors que le changement est UI :
 
 - Demande explicitement : `Y a-t-il une maquette (Figma, image, lien) pour ce changement ?`
 
-### Étape 3 — Base de contexte projet
+### Étape 3 — ByteRover
 
 Une fois le sujet connu :
 
-- Si `ByteRover` ou une base de contexte projet équivalente est installée, lance la requête avec des mots-clés concrets extraits du billet ou de la demande : nom de feature, entités métier, fichiers mentionnés, endpoints, modules.
-- Si aucune base de contexte projet n'est installée, passe cette étape sans bloquer le plan.
-- Si la base est disponible mais inaccessible, en erreur, ou si rien de pertinent ne ressort, continue sans bloquer le plan et note la limite seulement si elle affecte la qualité du plan.
+- Si ByteRover est installé, configuré, ou si le projet expose clairement sa présence (par exemple via `.brv/`), lance la requête avec des mots-clés concrets extraits du billet ou de la demande : nom de feature, entités métier, fichiers mentionnés, endpoints, modules.
+- Si ByteRover n'est pas installé ou configuré dans le projet, passe cette étape sans bloquer le plan.
+- Si ByteRover est disponible mais inaccessible, en erreur, ou si rien de pertinent ne ressort, continue sans bloquer le plan et note la limite seulement si elle affecte la qualité du plan.
 
 ### Étape 4 — Ancrage dans le codebase
 
@@ -87,21 +86,24 @@ Capture explicitement :
 - les patterns existants à réutiliser (`repository`, `service`, `composable`, `store`, etc.)
 - toute incohérence entre le billet et le code actuel
 
-### Étape 5 — Règles applicables
+### Étape 5 — Guidelines / règles applicables
 
-Liste chaque fichier `.cursor/rules/*.mdc` pertinent pour le changement. Pour chacun, dis en une ligne comment le plan s'y conforme.
+Liste les guidelines, règles et conventions pertinentes pour le changement. Pour chacune, dis en une ligne comment le plan s'y conforme.
 
-Ajoute aussi les conventions de même niveau trouvées dans le repo quand elles portent la même intention :
+Les formes exactes peuvent varier selon le projet. Par exemple :
 
+- `.cursor/rules/*.mdc`
+- `.claude/rules/*`
+- `.ai/guidelines/*`
 - `CLAUDE.md`
 - `AGENTS.md`
 - documents d'architecture ou de conventions proches du module touché
 
 Dans le plan final, confirme explicitement que ces règles seront respectées.
 
-### Étape 6 — Questions bloquantes
+### Étape 6 — Questions de clarification
 
-Si l'intention business, la portée, les contrats, les maquettes ou l'UX sont ambigus, pose les questions bloquantes avant d'écrire le plan. Ne suppose pas silencieusement.
+Si l'intention business, la portée, les contrats, les maquettes ou l'UX sont ambigus, pose les questions de clarification avant d'écrire le plan. Ne suppose pas silencieusement.
 
 ### Étapes 7 à 10 — Rédiger le plan
 
@@ -191,8 +193,9 @@ this.xyzService.doThing(input);
 ```
 
 ## 5. Conformité aux règles projet
-- **Règles appliquées et respectées**:
+- **Guidelines / règles appliquées et respectées**:
   - `.cursor/rules/<rule>.mdc` -> <comment respecté>
+  - `.claude/rules/<rule>.md` -> <comment respecté>
   - `CLAUDE.md` -> <comment respecté>
 
 ## 6. Principes appliqués
@@ -228,21 +231,23 @@ Ce qui ne sera pas fait dans ce plan, et pourquoi :
 ## 12. Questions ouvertes
 - <question restante adressée à l'utilisateur ou au PO>
 
-## 13. Traçabilité AC ↔ implémentation
+## 13. Couverture des critères d'acceptation
+Preuve explicite que le plan couvre tous les critères d'acceptation :
+
 | AC | Étapes | Notes |
 | --- | --- | --- |
 | AC#1 | 1 | ... |
 | AC#2 | 1, 2 | ... |
 ````
 
-## Anti-patterns
+## À ne pas faire
 
-- Plan vague sans références de fichiers ni snippets
-- Multiples solutions présentées comme équivalentes
-- Ignorer l'Epic et les billets liés
-- Hypothèses silencieuses sur la maquette ou le contrat API
-- Mentionner `respecte SOLID` sans expliquer concrètement où
-- Oublier la section i18n quand le changement touche l'UI ou des messages utilisateur
-- Lister des étapes d'implémentation sans les rattacher aux critères d'acceptation
-- Plan purement `happy path` sans edge cases ni gestion d'erreurs
-- Oublier l'impact cross-repo quand le changement touche un contrat API ou un repo voisin
+- ❌ Plan vague sans références de fichiers ni snippets
+- ❌ Multiples solutions présentées comme équivalentes
+- ❌ Ignorer l'Epic et les billets liés
+- ❌ Hypothèses silencieuses sur la maquette ou le contrat API
+- ❌ Mentionner `respecte SOLID` sans expliquer concrètement où
+- ❌ Oublier la section i18n quand le changement touche l'UI ou des messages utilisateur
+- ❌ Lister des étapes d'implémentation sans preuve explicite que le plan couvre les critères d'acceptation
+- ❌ Plan purement `happy path` sans edge cases ni gestion d'erreurs
+- ❌ Oublier l'impact cross-repo quand le changement touche un contrat API ou un repo voisin
