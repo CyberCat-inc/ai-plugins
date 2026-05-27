@@ -1,12 +1,12 @@
 {
   "name": "cybercat",
-  "version": "1.0.0",
-  "description": "Outils partagés CyberCat pour Cursor et Claude Code (skills, hooks, MCP).",
+  "version": "2.0.0",
+  "description": "Outils partagés CyberCat pour Cursor et Claude Code (skills, hooks, MCP), incluant la revue de code, l'evaluation et les notes de developpement.",
   "author": {
     "name": "CyberCat",
     "url": "https://github.com/CyberCat-inc"
   },
   "homepage": "https://github.com/CyberCat-inc/ai-plugins",
   "repository": "https://github.com/CyberCat-inc/ai-plugins",
-  "keywords": ["cybercat", "cc-code-review", "cc-evaluation", "skills"]
+  "keywords": ["cybercat", "cc-code-review", "cc-evaluation", "cc-notes-de-dev", "skills"]
 }
