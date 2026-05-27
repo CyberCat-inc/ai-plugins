@@ -10,6 +10,7 @@ duplication de contenu.
 | Composant | Déclencheur |
 |---|---|
 | `skills/cc-code-review/` | `/cc-code-review` (alias `/review`) ou « review my changes » |
+| `skills/cc-evaluation/` | `/cc-evaluation` ou « évalue ce billet » |
 
 ## Arborescence
 
@@ -24,7 +25,8 @@ ai-plugins/                          # repo = marketplace
 │       ├── .claude-plugin/plugin.json
 │       ├── .cursor-plugin/plugin.json
 │       └── skills/
-│           └── cc-code-review/SKILL.md
+│           ├── cc-code-review/SKILL.md
+│           └── cc-evaluation/SKILL.md
 └── README.md
 ```
 
@@ -49,7 +51,7 @@ https://github.com/CyberCat-inc/ai-plugins
 5. Va dans l'onglet **Discover**, sélectionne **cybercat**.
 6. Sur l'écran de détails, choisis **Install for you (user scope)**.
 
-Le plugin est installé. Teste dans un repo avec des modifs non committées avec `/cc-code-review` (alias `/review`).
+Le plugin est installé. Teste dans un repo avec des modifs non committées avec `/cc-code-review` (alias `/review`), ou avec un billet à évaluer via `/cc-evaluation`.
 
 ### Cursor
 
@@ -59,7 +61,7 @@ Le plugin est déjà disponible pour tous les utilisateurs Cursor de CyberCat.
 2. Dans l'onglet **Discover**, sélectionne **cybercat** puis clique **Install**.
 3. Recharge la fenêtre via la command palette (`Developer: Reload Window`).
 
-Teste avec `/cc-code-review` dans un repo avec des modifs non committées.
+Teste avec `/cc-code-review` dans un repo avec des modifs non committées, ou avec un billet à évaluer via `/cc-evaluation`.
 
 ## Mises à jour
 
