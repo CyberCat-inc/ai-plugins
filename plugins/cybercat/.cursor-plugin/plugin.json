@@ -1,6 +1,6 @@
 {
   "name": "cybercat",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Outils partagés CyberCat pour Cursor et Claude Code (skills, hooks, MCP).",
   "author": {
     "name": "CyberCat",

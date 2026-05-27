@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketplace interne CyberCat — skills et outils partagés pour Cursor et Claude Code.",
-    "version": "0.2.1"
+    "version": "1.0.0"
   },
   "plugins": [
     {
