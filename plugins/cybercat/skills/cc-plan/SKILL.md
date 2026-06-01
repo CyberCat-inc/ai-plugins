@@ -1,6 +1,6 @@
 ---
 name: cc-plan
-description: Produit un plan d'implémentation de haute qualité en combinant le contexte métier du billet, les maquettes, les règles projet et les principes SOLID/DRY/Clean Code. Utiliser quand l'utilisateur tape /cc-plan, /plan, ou demande la planification d'une feature, d'un billet ou d'un refactor.
+description: Produit un plan d'implémentation unique, concret et ancré dans le projet pour une feature, un billet ou un refactor. Utiliser quand l'utilisateur tape /cc-plan, /plan, ou demande la planification d'une feature, d'un billet ou d'un refactor.
 ---
 
 # Skill cc-plan
@@ -9,7 +9,7 @@ Ce skill produit un seul plan d'implémentation, actionnable et ancré dans le c
 
 ## Règles dures
 
-- Toujours poser les questions de clarification avant de produire le plan si un des éléments suivants est ambigu : intention business, portée, maquettes, edge cases, critères d'acceptation, mode cible, frontières de module ou de fichier.
+- Toujours poser les questions de clarification avant de produire le plan si un des éléments suivants est ambigu : intention business, portée, maquettes, edge cases, critères d'acceptation, mode de travail attendu, frontières de module ou de fichier.
 - Ne jamais produire plus d'une approche recommandée. Choisir la meilleure, la justifier, et garder les alternatives seulement comme notes courtes `Alternatives rejetées`.
 - Ne jamais écrire de code final hors du plan. Le planning est en lecture seule.
 - Ne jamais sauter l'étape Jira quand l'utilisateur mentionne une clé de billet Jira (ex. `ABC-123`). Si Jira n'est pas accessible dans le harnais courant et qu'aucune autre capacité tracker équivalente n'est disponible, arrêter et le dire clairement.
@@ -37,7 +37,7 @@ Copier cette checklist dans la réponse et la cocher au fur et à mesure :
 - [ ] 11. Section hors-scope remplie
 - [ ] 12. Impact cross-repo évalué
 - [ ] 13. Critères d'acceptation ↔ étapes d'implémentation tracés
-- [ ] 14. Impact i18n évalué
+- [ ] 14. Impacts spécifiques évalués (`i18n`, migrations / schéma si pertinent)
 
 ## Workflow
 
@@ -78,12 +78,12 @@ Une fois le sujet connu :
 
 ### Étape 4 — Ancrage dans le codebase
 
-Le plan doit être ancré dans le vrai codebase, pas dans des hypothèses.
+Le plan doit être validé contre le codebase réel, pas contre des hypothèses.
 
 Capture explicitement :
 
 - les fichiers réellement impactés
-- les patterns existants à réutiliser (`repository`, `service`, `composable`, `store`, etc.)
+- les patterns existants à réutiliser (service, helper, composant, action, wrapper, mécanisme de domaine, etc.)
 - toute incohérence entre le billet et le code actuel
 
 ### Étape 5 — Guidelines / règles applicables
@@ -111,7 +111,7 @@ Le plan doit :
 
 - rester sous une taille raisonnable
 - être concret
-- citer le code existant avec des références `start:end:path`
+- citer le code existant avec des références lignes + chemin de fichier (ex. `10:20:path/to/file.ts`)
 - proposer de petits extraits de forme de code, sans implémenter la solution complète
 
 ## Template de plan
@@ -153,15 +153,13 @@ Inclure un diagramme dès que le changement touche plus d'une couche ou introdui
 
 ```mermaid
 flowchart LR
-  UI["Vue View"] --> Store
-  Store --> Service
-  Service --> API["API / contrat"]
-  API --> Repo[Repository]
-  Repo --> DB[(DB)]
+  UI["UI / écran"] --> APP["Logique applicative"]
+  APP --> DOMAIN["Service / action / mécanisme"]
+  DOMAIN --> IO["API / DB / contrat / intégration"]
 ```
 
 ### 4.2 Décisions clés
-- **Décision**: <ex. extraire un `XyzService`>
+- **Décision**: <ex. extraire une responsabilité dans un composant dédié déjà cohérent avec le projet>
   - **Pourquoi**: <SOLID/SRP - la logique X n'a rien à faire dans Y>
   - **Alternatives rejetées**: <option B - raison courte>
 
@@ -170,26 +168,26 @@ flowchart LR
 
 ### 4.4 Changements proposés
 
-**Nouveau** `src/services/XyzService.ts`:
+**Nouveau** `src/<module>/ExampleHandler.ts`:
 
 ```ts
-export class XyzService {
-  constructor(private readonly repo: XyzRepository) {}
+export class ExampleHandler {
+  constructor(private readonly dependency: ExampleDependency) {}
 
-  public async doThing(input: XyzInput): Promise<XyzResult> {
+  public async execute(input: ExampleInput): Promise<ExampleResult> {
     // ...
   }
 }
 ```
 
-**Modification** `src/controllers/AbcController.ts` :
+**Modification** `src/<module>/ExistingEntryPoint.ts` :
 
 ```ts
 // Avant
-this.repo.doThing(input);
+existingFlow(input);
 
 // Après
-this.xyzService.doThing(input);
+exampleHandler.execute(input);
 ```
 
 ## 5. Conformité aux règles projet
@@ -209,6 +207,11 @@ this.xyzService.doThing(input);
   - `feature.xyz.cta`
 - Aucune clé orpheline / aucune string hardcodée.
   (Marquer `N/A` si le changement est purement backend.)
+
+## 7.1 Impact migrations / schéma
+- **Migration ou changement de schéma requis**: <oui/non>
+- **Prise en charge attendue dans ce scope**: <dans ce plan / géré ailleurs / à confirmer>
+  (Marquer `N/A` si le changement ne touche pas les données.)
 
 ## 8. Étapes d'implémentation (ordonnées)
 Chaque étape doit référencer le ou les critères d'acceptation couverts.
@@ -232,7 +235,7 @@ Ce qui ne sera pas fait dans ce plan, et pourquoi :
 - <question restante adressée à l'utilisateur ou au PO>
 
 ## 13. Couverture des critères d'acceptation
-Preuve explicite que le plan couvre tous les critères d'acceptation :
+Preuve explicite que les étapes d'implémentation couvrent tous les critères d'acceptation :
 
 | AC | Étapes | Notes |
 | --- | --- | --- |
